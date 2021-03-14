@@ -45,7 +45,7 @@ class SwapiService {
 
 const swapi = new SwapiService();
 
-swapi.getPerson(3).then( (p) => {
+swapi.getStarship(3).then( (p) => {
 
 
         console.log(p.name);
