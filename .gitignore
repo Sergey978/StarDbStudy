@@ -24,4 +24,4 @@ yarn-error.log*
 /.project
 /.idea
 /nbproject/private/
-/nbproject
+/nbproject/
