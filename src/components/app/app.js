@@ -7,8 +7,12 @@ import ErrorIndicator from '../error-indicator/error-indicator'
 
 import './app.css';
 import PeoplePage from '../people-page';
-export default class App extends Component {
+import ItemList from '../item-list/item-list';
+import SwapiService from '../../services/swapi-service';
 
+
+export default class App extends Component {
+  swapiService = new SwapiService();
   state = {
     showRandomPlanet: true,
     hasError: false
@@ -25,17 +29,17 @@ export default class App extends Component {
   onPersonSelected = (id) => {
     this.setState({
       selectedPerson: id
-    }); 
+    });
   };
 
-  componentDidCatch(){
+  componentDidCatch() {
     console.log("componentDidCatch()");
-    this.setState({hasError: true});
+    this.setState({ hasError: true });
   }
 
   render() {
 
-    if (this.state.hasError){
+    if (this.state.hasError) {
       return <ErrorIndicator />
     }
 
@@ -57,9 +61,17 @@ export default class App extends Component {
         </div>
 
         <PeoplePage />
-        <PeoplePage />
-        <PeoplePage />
-        <PeoplePage />
+
+        <div className="row mb2">
+          <div className="col-md-6">
+            <ItemList
+              onItemSelected={this.onPersonSelected}
+              getData={this.swapiService.getAllPlanets} 
+              renderItem = {(item) =>(
+              <span> {item.name} <button>!</button></span>)}/>
+          </div>
+        </div>
+
       </div>
     );
   }
