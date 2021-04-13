@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 
 import Header from '../header';
-import RandomPlanet from '../random-planet';
-import ErrorButton from '../error-button/error-button'
-import ErrorIndicator from '../error-indicator/error-indicator'
+import ErrorBoundry from "../error-boundry";
+import ItemDetails from "../item-details";
+
 
 import './app.css';
-import PeoplePage from '../people-page';
-import ItemList from '../item-list/item-list';
-import SwapiService from '../../services/swapi-service';
-
+import Row from '../row';
 
 export default class App extends Component {
-  swapiService = new SwapiService();
+
   state = {
-    showRandomPlanet: true,
-    hasError: false
+    showRandomPlanet: true
   };
 
   toggleRandomPlanet = () => {
@@ -26,53 +22,28 @@ export default class App extends Component {
     });
   };
 
-  onPersonSelected = (id) => {
-    this.setState({
-      selectedPerson: id
-    });
-  };
+  render() {    
 
-  componentDidCatch() {
-    console.log("componentDidCatch()");
-    this.setState({ hasError: true });
-  }
+      const personDetails = (
+        <ItemDetails  itemId = {11} />
+      )
 
-  render() {
-
-    if (this.state.hasError) {
-      return <ErrorIndicator />
-    }
-
-    const planet = this.state.showRandomPlanet ?
-      <RandomPlanet /> :
-      null;
+      const starshipDetails = (
+        <ItemDetails  itemId = {5} />
+      )
 
     return (
-      <div className="stardb-app">
-        <Header />
-        { planet}
-        <div className="row mb2 button-row">
-          <button
-            className="toggle-planet btn btn-warning btn-lg"
-            onClick={this.toggleRandomPlanet}>
-            Toggle Random Planet
-        </button>
-          <ErrorButton />
+      <ErrorBoundry>
+        <div className="stardb-app">
+          <Header />   
+
+          <Row
+          Left ={personDetails}
+          Right ={starshipDetails}
+          /> 
+         
         </div>
-
-        <PeoplePage />
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              onItemSelected={this.onPersonSelected}
-              getData={this.swapiService.getAllPlanets} 
-              renderItem = {(item) =>(
-              <span> {item.name} <button>!</button></span>)}/>
-          </div>
-        </div>
-
-      </div>
+      </ErrorBoundry>
     );
   }
 }

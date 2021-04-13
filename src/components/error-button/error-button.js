@@ -21,4 +21,4 @@ export default class ErrorButton extends Component {
       </button>
     );
   }
-} 
+}
